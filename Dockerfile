@@ -19,7 +19,7 @@ RUN wget -q https://downloads.sourceforge.net/project/pentaho/Pentaho%20${PDI_MA
     unzip pdi-ce-${PDI_VERSION}.zip && \
     rm pdi-ce-${PDI_VERSION}.zip
 
-COPY kitchen ./
+COPY . ./
 
 ENV KETTLE_HOME $HOME
 
