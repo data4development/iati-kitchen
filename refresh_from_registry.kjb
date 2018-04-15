@@ -8,7 +8,7 @@
   <created_user>-</created_user>
   <created_date>2018/02/25 12:38:36.855</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2018/04/15 17:52:34.555</modified_date>
+  <modified_date>2018/04/15 21:55:25.304</modified_date>
   <parameters>
     </parameters>
   <connection>
@@ -178,10 +178,10 @@
     </field>
   </job-log-table>
   <jobentry-log-table>
-    <connection>${KETTLE_JOBENTRY_LOG_DB}</connection>
-    <schema>${KETTLE_JOBENTRY_LOG_SCHEMA}</schema>
-    <table>${KETTLE_JOBENTRY_LOG_TABLE}</table>
-    <timeout_days>${KETTLE_MAX_LOG_TIMEOUT_IN_DAYS}</timeout_days>
+    <connection />
+    <schema />
+    <table />
+    <timeout_days />
     <field>
       <id>ID_BATCH</id>
       <enabled>Y</enabled>
@@ -259,12 +259,12 @@
     </field>
     <field>
       <id>LOG_FIELD</id>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
       <name>LOG_FIELD</name>
     </field>
     <field>
       <id>COPY_NR</id>
-      <enabled>N</enabled>
+      <enabled>Y</enabled>
       <name>COPY_NR</name>
     </field>
   </jobentry-log-table>
