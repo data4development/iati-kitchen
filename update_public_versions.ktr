@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>Update public versions</name>
+    <name>update_public_versions</name>
     <description>Update the dataset list of the 'current' version in the 'public' workspaces of publishers</description>
     <extended_description>This transformation retrieves a list of publishers from the IATI Registry, and then for each publisher retrieves the current datasets.
 
@@ -11,21 +10,6 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     <trans_status>1</trans_status>
     <directory>/</directory>
     <parameters>
-      <parameter>
-        <name>API_DWb</name>
-        <default_value>http://dev1.dataworkbench.io/api/</default_value>
-        <description>API address of the DataWorkbench</description>
-      </parameter>
-      <parameter>
-        <name>API_Registry_Orgs</name>
-        <default_value>https://iatiregistry.org/api/3/action/group_list?limit=1500</default_value>
-        <description>API address of the IATI Registry to get publishers</description>
-      </parameter>
-      <parameter>
-        <name>API_Registry_Packages</name>
-        <default_value>https://iatiregistry.org/api/3/action/package_search</default_value>
-        <description>API address of the IATI Registry to get packages information</description>
-      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -128,17 +112,17 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
         </field>
         <field>
           <id>EXECUTING_SERVER</id>
-          <enabled>N</enabled>
+          <enabled>Y</enabled>
           <name>EXECUTING_SERVER</name>
         </field>
         <field>
           <id>EXECUTING_USER</id>
-          <enabled>N</enabled>
+          <enabled>Y</enabled>
           <name>EXECUTING_USER</name>
         </field>
         <field>
           <id>CLIENT</id>
-          <enabled>N</enabled>
+          <enabled>Y</enabled>
           <name>CLIENT</name>
         </field>
       </trans-log-table>
@@ -460,21 +444,67 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     <created_user>-</created_user>
     <created_date>2018/02/25 11:52:40.943</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/02/25 11:52:40.943</modified_date>
+    <modified_date>2018/04/15 17:57:17.352</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
+  <connection>
+    <name>dataworkbench</name>
+    <server>${DWB_DB_HOST}</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>${DWB_DB_NAME}</database>
+    <port>${DWB_DB_PORT}</port>
+    <username>${DWB_DB_USERNAME}</username>
+    <password>${DWB_DB_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${DWB_DB_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <order>
     <hop>
       <from>Check for HTTP 200 (IATI)</from>
       <to>Iterate over publishers</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Get data packages</from>
-      <to>Check for HTTP 200 (packages)</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -483,28 +513,13 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Get Env Variables</from>
-      <to>Get publishers from Registry</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Get publishers from Registry</from>
       <to>Check for HTTP 200 (IATI)</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Start</from>
-      <to>Get Env Variables</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Iterate over publishers</from>
       <to>Prepare URL to get packages</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Prepare URL to get packages</from>
-      <to>Get data packages</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -539,12 +554,22 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     </hop>
     <hop>
       <from>Gather md5s</from>
-      <to>Select values</to>
+      <to>Select required fields</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Select values</from>
+      <from>Select required fields</from>
       <to>Construct version record</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Prepare URL to get packages</from>
+      <to>Get packages for publisher</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get packages for publisher</from>
+      <to>Check for HTTP 200 (packages)</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -553,8 +578,8 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Upsert version</from>
-      <to>Select values 2</to>
+      <from>Start</from>
+      <to>Get publishers from Registry</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -592,7 +617,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     </remotesteps>
     <GUI>
       <xloc>400</xloc>
-      <yloc>650</yloc>
+      <yloc>576</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -635,7 +660,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     </remotesteps>
     <GUI>
       <xloc>800</xloc>
-      <yloc>50</yloc>
+      <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -678,7 +703,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     </remotesteps>
     <GUI>
       <xloc>800</xloc>
-      <yloc>200</yloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -741,8 +766,8 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       </output>
     </remotesteps>
     <GUI>
-      <xloc>200</xloc>
-      <yloc>500</yloc>
+      <xloc>192</xloc>
+      <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -765,7 +790,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
         <jsScript_name>Script 1</jsScript_name>
         <jsScript_script>// Version record data to add
 var v = {
-  'md5': md5
+  'md5': JSON.parse(md5)
 }
 
 // Version selection criteria
@@ -777,8 +802,7 @@ var vw = {
 
 version = JSON.stringify(v)
 versionwhere = JSON.stringify(vw)
-
-dwb_url_version = dwb_api_url + 'versions/upsertWithWhere'</jsScript_script>
+</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
@@ -798,14 +822,6 @@ dwb_url_version = dwb_api_url + 'versions/upsertWithWhere'</jsScript_script>
         <precision>-1</precision>
         <replace>N</replace>
       </field>
-      <field>
-        <name>dwb_url_version</name>
-        <rename>dwb_url_version</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -815,8 +831,8 @@ dwb_url_version = dwb_api_url + 'versions/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>600</xloc>
-      <yloc>800</yloc>
+      <xloc>400</xloc>
+      <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -866,120 +882,7 @@ md5 = JSON.stringify(md5a)</jsScript_script>
     </remotesteps>
     <GUI>
       <xloc>800</xloc>
-      <yloc>500</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Get Env Variables</name>
-    <type>GetVariable</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>iati_registry_url</name>
-        <variable>${API_Registry_Orgs}</variable>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>dwb_api_url</name>
-        <variable>${API_DWb}</variable>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>iati_registry_packages_url</name>
-        <variable>${API_Registry_Packages}</variable>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>400</xloc>
-      <yloc>50</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Get data packages</name>
-    <type>Rest</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <applicationType>JSON</applicationType>
-    <method>GET</method>
-    <url />
-    <urlInField>Y</urlInField>
-    <dynamicMethod>N</dynamicMethod>
-    <methodFieldName />
-    <urlField>iati_get_packages_url</urlField>
-    <bodyField>organisation</bodyField>
-    <httpLogin />
-    <httpPassword>Encrypted </httpPassword>
-    <proxyHost />
-    <proxyPort />
-    <preemptive>N</preemptive>
-    <trustStoreFile />
-    <trustStorePassword>Encrypted </trustStorePassword>
-    <headers>
-      </headers>
-    <parameters>
-      </parameters>
-    <matrixParameters>
-      </matrixParameters>
-    <result>
-      <name>publisher_result</name>
-      <code>publisher_http</code>
-      <response_time />
-      <response_header />
-    </result>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>600</xloc>
-      <yloc>200</yloc>
+      <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -999,7 +902,7 @@ md5 = JSON.stringify(md5a)</jsScript_script>
     <rownum>N</rownum>
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
-    <removeSourceField>N</removeSourceField>
+    <removeSourceField>Y</removeSourceField>
     <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
@@ -1059,8 +962,8 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>200</xloc>
-      <yloc>350</yloc>
+      <xloc>192</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1075,9 +978,9 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <url />
-    <urlInField>Y</urlInField>
-    <urlField>dwb_get_datasets</urlField>
+    <url>${DWB_API_URL}/iati-datasets</url>
+    <urlInField>N</urlInField>
+    <urlField />
     <encoding>UTF-8</encoding>
     <httpLogin />
     <httpPassword>Encrypted </httpPassword>
@@ -1106,8 +1009,55 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>600</xloc>
-      <yloc>500</yloc>
+      <xloc>608</xloc>
+      <yloc>432</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Get packages for publisher</name>
+    <type>HTTP</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <url>${IATI_API_URL}/${IATI_API_PACKAGE_SEARCH}</url>
+    <urlInField>N</urlInField>
+    <urlField />
+    <encoding>UTF-8</encoding>
+    <httpLogin />
+    <httpPassword>Encrypted </httpPassword>
+    <proxyHost />
+    <proxyPort />
+    <socketTimeout>10000</socketTimeout>
+    <connectionTimeout>10000</connectionTimeout>
+    <closeIdleConnectionsTime>-1</closeIdleConnectionsTime>
+    <lookup>
+      <arg>
+        <name>iati_get_packages_q</name>
+        <parameter>q</parameter>
+      </arg>
+    </lookup>
+    <result>
+      <name>publisher_result</name>
+      <code>publisher_http</code>
+      <response_time />
+      <response_header />
+    </result>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>608</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1122,9 +1072,9 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <url />
-    <urlInField>Y</urlInField>
-    <urlField>iati_registry_url</urlField>
+    <url>${IATI_API_URL}/${IATI_API_GET_ALL_ORGS}</url>
+    <urlInField>N</urlInField>
+    <urlField />
     <encoding>UTF-8</encoding>
     <httpLogin />
     <httpPassword>Encrypted </httpPassword>
@@ -1149,8 +1099,8 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>600</xloc>
-      <yloc>50</yloc>
+      <xloc>608</xloc>
+      <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1170,7 +1120,7 @@ md5 = JSON.stringify(md5a)</jsScript_script>
     <rownum>N</rownum>
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
-    <removeSourceField>N</removeSourceField>
+    <removeSourceField>Y</removeSourceField>
     <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
@@ -1217,8 +1167,8 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>200</xloc>
-      <yloc>200</yloc>
+      <xloc>192</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1241,14 +1191,14 @@ md5 = JSON.stringify(md5a)</jsScript_script>
         <jsScript_name>Script 1</jsScript_name>
         <jsScript_script>//Script here
 
-iati_get_packages_url = iati_registry_packages_url + '?rows=250&amp;q=organization:' + organisation_record
+iati_get_packages_q = 'organization:' + organisation_record
 </jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
       <field>
-        <name>iati_get_packages_url</name>
-        <rename>iati_get_packages_url</rename>
+        <name>iati_get_packages_q</name>
+        <rename>iati_get_packages_q</rename>
         <type>String</type>
         <length>-1</length>
         <precision>-1</precision>
@@ -1264,7 +1214,7 @@ iati_get_packages_url = iati_registry_packages_url + '?rows=250&amp;q=organizati
     </remotesteps>
     <GUI>
       <xloc>400</xloc>
-      <yloc>200</yloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1287,21 +1237,11 @@ iati_get_packages_url = iati_registry_packages_url + '?rows=250&amp;q=organizati
         <jsScript_name>Script 1</jsScript_name>
         <jsScript_script>//Script here
 
-dwb_get_datasets = dwb_api_url + 'iati-datasets'
-
 f = {"where": {"publisher": organisation_record}}
 filter = JSON.stringify(f)</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
-      <field>
-        <name>dwb_get_datasets</name>
-        <rename>dwb_get_datasets</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
       <field>
         <name>filter</name>
         <rename>filter</rename>
@@ -1320,12 +1260,12 @@ filter = JSON.stringify(f)</jsScript_script>
     </remotesteps>
     <GUI>
       <xloc>400</xloc>
-      <yloc>500</yloc>
+      <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Select values</name>
+    <name>Select required fields</name>
     <type>SelectValues</type>
     <description />
     <distribute>Y</distribute>
@@ -1340,28 +1280,10 @@ filter = JSON.stringify(f)</jsScript_script>
         <name>start</name>
       </field>
       <field>
-        <name>iati_registry_url</name>
-      </field>
-      <field>
-        <name>dwb_api_url</name>
-      </field>
-      <field>
-        <name>iati_registry_packages_url</name>
-      </field>
-      <field>
-        <name>registry_result</name>
-      </field>
-      <field>
         <name>registry_http</name>
       </field>
       <field>
         <name>organisation_record</name>
-      </field>
-      <field>
-        <name>iati_get_packages_url</name>
-      </field>
-      <field>
-        <name>publisher_result</name>
       </field>
       <field>
         <name>publisher_http</name>
@@ -1375,6 +1297,9 @@ filter = JSON.stringify(f)</jsScript_script>
       <field>
         <name>md5</name>
       </field>
+      <field>
+        <name>iati_get_packages_q</name>
+      </field>
       <select_unspecified>N</select_unspecified>
     </fields>
     <cluster_schema />
@@ -1386,58 +1311,7 @@ filter = JSON.stringify(f)</jsScript_script>
     </remotesteps>
     <GUI>
       <xloc>800</xloc>
-      <yloc>650</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values 2</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>organisation_record</name>
-      </field>
-      <field>
-        <name>iati_get_packages_url</name>
-      </field>
-      <field>
-        <name>dataset_count</name>
-      </field>
-      <field>
-        <name>dataset_success</name>
-      </field>
-      <field>
-        <name>md5</name>
-      </field>
-      <field>
-        <name>versionwhere</name>
-      </field>
-      <field>
-        <name>version</name>
-      </field>
-      <field>
-        <name>version_result</name>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>1000</xloc>
-      <yloc>800</yloc>
+      <yloc>576</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1479,8 +1353,8 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>200</xloc>
-      <yloc>50</yloc>
+      <xloc>192</xloc>
+      <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1497,11 +1371,11 @@ filter = JSON.stringify(f)</jsScript_script>
     </partitioning>
     <applicationType>JSON</applicationType>
     <method>POST</method>
-    <url />
-    <urlInField>Y</urlInField>
+    <url>${DWB_API_URL}/versions/upsertWithWhere</url>
+    <urlInField>N</urlInField>
     <dynamicMethod>N</dynamicMethod>
     <methodFieldName />
-    <urlField>dwb_url_version</urlField>
+    <urlField />
     <bodyField>version</bodyField>
     <httpLogin />
     <httpPassword>Encrypted </httpPassword>
@@ -1534,8 +1408,8 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
-      <yloc>800</yloc>
+      <xloc>608</xloc>
+      <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

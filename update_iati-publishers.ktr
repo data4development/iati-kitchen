@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>Update iati-publishers</name>
+    <name>update_iati-publishers</name>
     <description>Update the publishers list with information from the IATI Registry</description>
     <extended_description>This transformation retrieves the list of all publishers from the IATI Registry, and inserts or updates the records about them in the DataWorkbench.
 
@@ -120,7 +119,7 @@ It will also create a workspace for "Public IATI" and a "Current" version within
         </field>
         <field>
           <id>EXECUTING_USER</id>
-          <enabled>N</enabled>
+          <enabled>Y</enabled>
           <name>EXECUTING_USER</name>
         </field>
         <field>
@@ -420,7 +419,7 @@ It will also create a workspace for "Public IATI" and a "Current" version within
     <feedback_size>50000</feedback_size>
     <using_thread_priorities>Y</using_thread_priorities>
     <shared_objects_file />
-    <capture_step_performance>N</capture_step_performance>
+    <capture_step_performance>Y</capture_step_performance>
     <step_performance_capturing_delay>1000</step_performance_capturing_delay>
     <step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
     <dependencies>
@@ -434,12 +433,63 @@ It will also create a workspace for "Public IATI" and a "Current" version within
     <created_user>-</created_user>
     <created_date>2018/02/25 11:52:40.943</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/02/25 11:52:40.943</modified_date>
+    <modified_date>2018/04/15 17:54:04.302</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
+  <connection>
+    <name>dataworkbench</name>
+    <server>${DWB_DB_HOST}</server>
+    <type>POSTGRESQL</type>
+    <access>Native</access>
+    <database>${DWB_DB_NAME}</database>
+    <port>${DWB_DB_PORT}</port>
+    <username>${DWB_DB_USERNAME}</username>
+    <password>${DWB_DB_PASSWORD}</password>
+    <servername />
+    <data_tablespace />
+    <index_tablespace />
+    <attributes>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${DWB_DB_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <order>
     <hop>
       <from>Check for HTTP 200 (IATI)</from>
@@ -482,16 +532,6 @@ It will also create a workspace for "Public IATI" and a "Current" version within
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Create offset</from>
-      <to>Get Env Variables</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Get Env Variables</from>
-      <to>Get publishers from Registry</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Get publishers from Registry</from>
       <to>Check for HTTP 200 (IATI)</to>
       <enabled>Y</enabled>
@@ -508,12 +548,12 @@ It will also create a workspace for "Public IATI" and a "Current" version within
     </hop>
     <hop>
       <from>Construct publisher record</from>
-      <to>Select values</to>
+      <to>Upsert the publisher</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Select values</from>
-      <to>Upsert the publisher</to>
+      <from>Create offset</from>
+      <to>Get publishers from Registry</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -555,8 +595,8 @@ It will also create a workspace for "Public IATI" and a "Current" version within
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1050</xloc>
-      <yloc>150</yloc>
+      <xloc>976</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -598,8 +638,8 @@ It will also create a workspace for "Public IATI" and a "Current" version within
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1050</xloc>
-      <yloc>300</yloc>
+      <xloc>976</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -641,8 +681,8 @@ It will also create a workspace for "Public IATI" and a "Current" version within
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1050</xloc>
-      <yloc>450</yloc>
+      <xloc>976</xloc>
+      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -691,8 +731,6 @@ n.registry_data = o
 
 organisation = JSON.stringify(n)
 
-dwb_url_publisher = dwb_api_url + 'iati-publishers/upsertWithWhere'
-
 publisher_slug = n.slug</jsScript_script>
       </jsScript>
     </jsScripts>
@@ -722,14 +760,6 @@ publisher_slug = n.slug</jsScript_script>
         <replace>N</replace>
       </field>
       <field>
-        <name>dwb_url_publisher</name>
-        <rename>dwb_url_publisher</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
         <name>publisher_slug</name>
         <rename>publisher_slug</rename>
         <type>String</type>
@@ -746,8 +776,8 @@ publisher_slug = n.slug</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>550</xloc>
-      <yloc>300</yloc>
+      <xloc>560</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -789,8 +819,7 @@ vw['workspaceId'] = w.id
 
 version = JSON.stringify(v)
 versionwhere = JSON.stringify(vw)
-
-dwb_url_version = dwb_api_url + 'versions/upsertWithWhere'</jsScript_script>
+</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
@@ -810,14 +839,6 @@ dwb_url_version = dwb_api_url + 'versions/upsertWithWhere'</jsScript_script>
         <precision>-1</precision>
         <replace>N</replace>
       </field>
-      <field>
-        <name>dwb_url_version</name>
-        <rename>dwb_url_version</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -827,8 +848,8 @@ dwb_url_version = dwb_api_url + 'versions/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>550</xloc>
-      <yloc>600</yloc>
+      <xloc>560</xloc>
+      <yloc>544</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -870,8 +891,7 @@ ww['iati-publisherId'] = o.id
 
 workspace = JSON.stringify(ws)
 workspacewhere = JSON.stringify(ww)
-
-dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
+</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
@@ -891,14 +911,6 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
         <precision>-1</precision>
         <replace>N</replace>
       </field>
-      <field>
-        <name>dwb_url_workspace</name>
-        <rename>dwb_url_workspace</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -908,8 +920,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>550</xloc>
-      <yloc>450</yloc>
+      <xloc>560</xloc>
+      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -926,13 +938,13 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
     </partitioning>
     <valuename>offset</valuename>
     <use_database>N</use_database>
-    <connection>midgard-dataworkbench</connection>
+    <connection />
     <schema />
     <seqname>SEQ_</seqname>
     <use_counter>Y</use_counter>
     <counter_name>offset</counter_name>
     <start_at>0</start_at>
-    <increment_by>${API_Registry_org_step_size}</increment_by>
+    <increment_by>${IATI_ORG_STEP_SIZE}</increment_by>
     <max_value>20000</max_value>
     <cluster_schema />
     <remotesteps>
@@ -942,8 +954,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>350</xloc>
-      <yloc>150</yloc>
+      <xloc>352</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -985,70 +997,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>350</xloc>
-      <yloc>300</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Get Env Variables</name>
-    <type>GetVariable</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>iati_registry_url</name>
-        <variable>${API_Registry}</variable>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>dwb_api_url</name>
-        <variable>${API_DWb}</variable>
-        <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>limit</name>
-        <variable>${API_Registry_org_step_size}</variable>
-        <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>550</xloc>
-      <yloc>150</yloc>
+      <xloc>352</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1063,9 +1013,9 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       <method>none</method>
       <schema_name />
     </partitioning>
-    <url />
-    <urlInField>Y</urlInField>
-    <urlField>iati_registry_url</urlField>
+    <url>${IATI_API_URL}/${IATI_API_GET_ORGS}&amp;limit=${IATI_ORG_STEP_SIZE}</url>
+    <urlInField>N</urlInField>
+    <urlField />
     <encoding>UTF-8</encoding>
     <httpLogin />
     <httpPassword>Encrypted </httpPassword>
@@ -1075,10 +1025,6 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
     <connectionTimeout>10000</connectionTimeout>
     <closeIdleConnectionsTime>-1</closeIdleConnectionsTime>
     <lookup>
-      <arg>
-        <name>limit</name>
-        <parameter>limit</parameter>
-      </arg>
       <arg>
         <name>offset</name>
         <parameter>offset</parameter>
@@ -1098,8 +1044,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>850</xloc>
-      <yloc>150</yloc>
+      <xloc>784</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1119,7 +1065,7 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
     <rownum>N</rownum>
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
-    <removeSourceField>N</removeSourceField>
+    <removeSourceField>Y</removeSourceField>
     <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
@@ -1166,53 +1112,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>200</xloc>
-      <yloc>300</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <fields>
-      <field>
-        <name>dwb_api_url</name>
-      </field>
-      <field>
-        <name>organisation</name>
-      </field>
-      <field>
-        <name>organisationwhere</name>
-      </field>
-      <field>
-        <name>registry_id</name>
-      </field>
-      <field>
-        <name>dwb_url_publisher</name>
-      </field>
-      <field>
-        <name>publisher_slug</name>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>700</xloc>
-      <yloc>300</yloc>
+      <xloc>208</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1241,7 +1142,7 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
         <set_empty_string>N</set_empty_string>
       </field>
     </fields>
-    <limit>${API_Registry_org_step_count}</limit>
+    <limit>${IATI_ORG_STEP_COUNT}</limit>
     <never_ending>N</never_ending>
     <interval_in_ms>5000</interval_in_ms>
     <row_time_field>now</row_time_field>
@@ -1254,8 +1155,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>200</xloc>
-      <yloc>150</yloc>
+      <xloc>208</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1272,11 +1173,11 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
     </partitioning>
     <applicationType>JSON</applicationType>
     <method>POST</method>
-    <url />
-    <urlInField>Y</urlInField>
+    <url>${DWB_API_URL}/workspaces/upsertWithWhere</url>
+    <urlInField>N</urlInField>
     <dynamicMethod>N</dynamicMethod>
     <methodFieldName />
-    <urlField>dwb_url_workspace</urlField>
+    <urlField />
     <bodyField>workspace</bodyField>
     <httpLogin />
     <httpPassword>Encrypted </httpPassword>
@@ -1309,8 +1210,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>850</xloc>
-      <yloc>450</yloc>
+      <xloc>784</xloc>
+      <yloc>400</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1327,11 +1228,11 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
     </partitioning>
     <applicationType>JSON</applicationType>
     <method>POST</method>
-    <url />
-    <urlInField>Y</urlInField>
+    <url>${DWB_API_URL}/iati-publishers/upsertWithWhere</url>
+    <urlInField>N</urlInField>
     <dynamicMethod>N</dynamicMethod>
     <methodFieldName />
-    <urlField>dwb_url_publisher</urlField>
+    <urlField />
     <bodyField>organisation</bodyField>
     <httpLogin />
     <httpPassword>Encrypted </httpPassword>
@@ -1364,8 +1265,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>850</xloc>
-      <yloc>300</yloc>
+      <xloc>784</xloc>
+      <yloc>240</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1382,11 +1283,11 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
     </partitioning>
     <applicationType>JSON</applicationType>
     <method>POST</method>
-    <url />
-    <urlInField>Y</urlInField>
+    <url>${DWB_API_URL}/versions/upsertWithWhere</url>
+    <urlInField>N</urlInField>
     <dynamicMethod>N</dynamicMethod>
     <methodFieldName />
-    <urlField>dwb_url_version</urlField>
+    <urlField />
     <bodyField>version</bodyField>
     <httpLogin />
     <httpPassword>Encrypted </httpPassword>
@@ -1419,8 +1320,8 @@ dwb_url_workspace = dwb_api_url + 'workspaces/upsertWithWhere'</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>850</xloc>
-      <yloc>600</yloc>
+      <xloc>784</xloc>
+      <yloc>544</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
