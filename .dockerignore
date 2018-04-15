@@ -2,6 +2,10 @@
 .git/
 .gitignore
 Dockerfile
-README*
 docs/
 tmp/
+README*
+.kettle/.spoonrc
+.kettle/db.*
+.kettle/*.backup
+repository.log

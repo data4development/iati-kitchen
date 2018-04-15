@@ -1,2 +1,5 @@
-secrets/
 tmp/
+.kettle/.spoonrc
+.kettle/db.*
+.kettle/*.backup
+repository.log
