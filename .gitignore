@@ -2,4 +2,5 @@ tmp/
 .kettle/.spoonrc
 .kettle/db.*
 .kettle/*.backup
+.kettle/xul*
 repository.log
