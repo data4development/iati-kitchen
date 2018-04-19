@@ -53,7 +53,7 @@ RUN wget -q https://downloads.sourceforge.net/project/pentaho/Pentaho%20${PDI_MA
 
 COPY . ./
 # overwrite the local properties with the cluster version
-COPY .kettle/cluster-kettle.properties .kettle/
+COPY .kettle/cluster-kettle.properties .kettle/kettle.properties
 
 ENV KETTLE_HOME $HOME
 
