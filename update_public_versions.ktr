@@ -431,63 +431,88 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     <created_user>-</created_user>
     <created_date>2018/02/25 11:52:40.943</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/04/16 17:49:17.205</modified_date>
+    <modified_date>2018/04/19 22:39:23.215</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
+    <notepad>
+      <note>Get the publishers from the Registry
+Get the datasets for the publisher</note>
+      <xloc>16</xloc>
+      <yloc>48</yloc>
+      <width>221</width>
+      <heigth>46</heigth>
+      <fontname>Alegreya Sans</fontname>
+      <fontsize>11</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>If there are datasets:
+Check which versions we have
+based on dataset name
+
+If so: get the relevant md5s:
+most recent, up to first validated version
+
+Add the md5s to the version record.</note>
+      <xloc>16</xloc>
+      <yloc>432</yloc>
+      <width>244</width>
+      <heigth>154</heigth>
+      <fontname>Alegreya Sans</fontname>
+      <fontsize>11</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>For all discarded md5s
+(newer versions with completed
+JSON, SVRL reports available):
+
+Add a "discard" field to the record
+for future "garbage collection".</note>
+      <xloc>1296</xloc>
+      <yloc>432</yloc>
+      <width>202</width>
+      <heigth>118</heigth>
+      <fontname>Alegreya Sans</fontname>
+      <fontsize>11</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
   </notepads>
-  <connection>
-    <name>dataworkbench</name>
-    <server>${DWB_DB_HOST}</server>
-    <type>POSTGRESQL</type>
-    <access>Native</access>
-    <database>${DWB_DB_NAME}</database>
-    <port>${DWB_DB_PORT}</port>
-    <username>${DWB_DB_USERNAME}</username>
-    <password>${DWB_DB_PASSWORD}</password>
-    <servername />
-    <data_tablespace />
-    <index_tablespace />
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>${DWB_DB_PORT}</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
   <order>
     <hop>
       <from>Check for HTTP 200 (IATI)</from>
@@ -535,16 +560,6 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Get our datasets</from>
-      <to>Gather md5s</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Gather md5s</from>
-      <to>Select required fields</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Select required fields</from>
       <to>Construct version record</to>
       <enabled>Y</enabled>
@@ -567,6 +582,36 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     <hop>
       <from>Start</from>
       <to>Get publishers from Registry</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get our datasets</from>
+      <to>Gather md5s to show and discard</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Gather md5s to show and discard</from>
+      <to>Select required fields</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Gather md5s to show and discard</from>
+      <to>Process md5s to discard</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Prepare "discard" field</from>
+      <to>Upsert iati-dataset</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Process md5s to discard</from>
+      <to>md5 to discard is not null</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>md5 to discard is not null</from>
+      <to>Prepare "discard" field</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -603,8 +648,8 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>576</yloc>
+      <xloc>336</xloc>
+      <yloc>560</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -646,7 +691,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
+      <xloc>944</xloc>
       <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
@@ -689,7 +734,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
+      <xloc>944</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -753,7 +798,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
+      <xloc>336</xloc>
       <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
@@ -818,16 +863,16 @@ versionwhere = JSON.stringify(vw)
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
+      <xloc>544</xloc>
       <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Gather md5s</name>
+    <name>Gather md5s to show and discard</name>
     <type>ScriptValueMod</type>
     <description />
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution />
     <copies>1</copies>
     <partitioning>
@@ -840,20 +885,64 @@ versionwhere = JSON.stringify(vw)
       <jsScript>
         <jsScript_type>0</jsScript_type>
         <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>datasets = JSON.parse(our_datasets)
-md5a = []
+        <jsScript_script>published_sets = {}
+JSON.parse(dataset_records).forEach( function(ds) {
+  published_sets[ds.name]=true;
+});
 
-for (i = 0; i &lt; datasets.length; i++) {
-    md5a.push(datasets[i].md5)
-}
+md5show = [];
+md5discard = [];
 
-md5 = JSON.stringify(md5a)</jsScript_script>
+group = "";
+publictitle = "";
+jsondone = false;
+svrldone = false;
+
+JSON.parse(our_datasets).forEach( function (ds) {
+  md5 = ds.md5;
+
+  if (group !== ds.name) {
+    group = ds.name;
+    jsondone = false;
+    svrldone = false;
+
+	// is this dataset name (minus '.xml') in the list of published sets?
+    published = ds.filename.slice(0, -4) in published_sets;
+  }
+
+  if (!published) {
+    md5discard.push(md5);
+  } else {
+    if (!jsondone) {
+      md5show.push(md5);
+    }
+
+    if (jsondone &amp;&amp; svrldone) {
+      md5discard.push(md5);
+    }
+
+    svrldone |= "svrl-updated" in ds;
+    jsondone |= "json-updated" in ds;
+  }
+
+});
+
+md5 = JSON.stringify(md5show);
+discardmd5s = JSON.stringify(md5discard);</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
       <field>
         <name>md5</name>
         <rename>md5</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>discardmd5s</name>
+        <rename>discardmd5s</rename>
         <type>String</type>
         <length>-1</length>
         <precision>-1</precision>
@@ -868,7 +957,7 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
+      <xloc>944</xloc>
       <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
@@ -928,6 +1017,19 @@ md5 = JSON.stringify(md5a)</jsScript_script>
         <trim_type>none</trim_type>
         <repeat>N</repeat>
       </field>
+      <field>
+        <name>dataset_records</name>
+        <path>$.result.results</path>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
     </fields>
     <limit>0</limit>
     <IsInFields>Y</IsInFields>
@@ -949,7 +1051,7 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
+      <xloc>336</xloc>
       <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
@@ -996,7 +1098,7 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
+      <xloc>752</xloc>
       <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1043,7 +1145,7 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
+      <xloc>752</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1086,7 +1188,7 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
+      <xloc>752</xloc>
       <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1154,8 +1256,62 @@ md5 = JSON.stringify(md5a)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
+      <xloc>336</xloc>
       <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Prepare "discard" field</name>
+    <type>ScriptValueMod</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+
+discard = {"discard": true}
+where = {"md5": discardmd5, "publisher": organisation_record}</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>discardfield</name>
+        <rename>discardfield</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>wherefield</name>
+        <rename>wherefield</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1184</xloc>
+      <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1200,7 +1356,7 @@ iati_get_packages_q = 'organization:' + organisation_record
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
+      <xloc>544</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1224,7 +1380,7 @@ iati_get_packages_q = 'organization:' + organisation_record
         <jsScript_name>Script 1</jsScript_name>
         <jsScript_script>//Script here
 
-f = {"where": {"publisher": organisation_record}}
+f = {"where": {"publisher": organisation_record}, "order": ["name", "downloaded DESC"]}
 filter = JSON.stringify(f)</jsScript_script>
       </jsScript>
     </jsScripts>
@@ -1246,7 +1402,75 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
+      <xloc>544</xloc>
+      <yloc>432</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Process md5s to discard</name>
+    <type>JsonInput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <include>N</include>
+    <include_field />
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>Y</removeSourceField>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <rownum_field />
+    <file>
+      <name />
+      <filemask />
+      <exclude_filemask />
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>discardmd5</name>
+        <path>$.[*]</path>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>discardmd5s</valueField>
+    <shortFileFieldName />
+    <pathFieldName />
+    <hiddenFieldName />
+    <lastModificationTimeFieldName />
+    <uriNameFieldName />
+    <rootUriNameFieldName />
+    <extensionFieldName />
+    <sizeFieldName />
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1184</xloc>
       <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1265,35 +1489,30 @@ filter = JSON.stringify(f)</jsScript_script>
     <fields>
       <field>
         <name>start</name>
-        <rename />
       </field>
       <field>
         <name>registry_http</name>
-        <rename />
       </field>
       <field>
         <name>organisation_record</name>
-        <rename />
       </field>
       <field>
         <name>iati_get_packages_q</name>
-        <rename />
       </field>
       <field>
         <name>publisher_http</name>
-        <rename />
       </field>
       <field>
         <name>dataset_count</name>
-        <rename />
       </field>
       <field>
         <name>dataset_success</name>
-        <rename />
+      </field>
+      <field>
+        <name>dataset_records</name>
       </field>
       <field>
         <name>md5</name>
-        <rename />
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -1305,8 +1524,8 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
-      <yloc>576</yloc>
+      <xloc>544</xloc>
+      <yloc>560</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1348,8 +1567,63 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
+      <xloc>336</xloc>
       <yloc>48</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Upsert iati-dataset</name>
+    <type>Rest</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <applicationType>JSON</applicationType>
+    <method>POST</method>
+    <url>${DWB_API_URL}/iati-datasets/upsertWithWhere</url>
+    <urlInField>N</urlInField>
+    <dynamicMethod>N</dynamicMethod>
+    <methodFieldName />
+    <urlField />
+    <bodyField>discardfield</bodyField>
+    <httpLogin />
+    <httpPassword>Encrypted </httpPassword>
+    <proxyHost />
+    <proxyPort />
+    <preemptive>N</preemptive>
+    <trustStoreFile />
+    <trustStorePassword>Encrypted </trustStorePassword>
+    <headers>
+      </headers>
+    <parameters>
+      <parameter>
+        <field>wherefield</field>
+        <name>wherefield</name>
+      </parameter>
+    </parameters>
+    <matrixParameters>
+      </matrixParameters>
+    <result>
+      <name>discard_result</name>
+      <code>discard_http</code>
+      <response_time />
+      <response_header />
+    </result>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1376</xloc>
+      <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1403,8 +1677,42 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>608</xloc>
+      <xloc>752</xloc>
       <yloc>688</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>md5 to discard is not null</name>
+    <type>FilterRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <send_true_to>Prepare "discard" field</send_true_to>
+    <send_false_to />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>discardmd5</leftvalue>
+        <function>IS NOT NULL</function>
+        <rightvalue />
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1184</xloc>
+      <yloc>560</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
