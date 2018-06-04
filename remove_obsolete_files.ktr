@@ -428,18 +428,13 @@
     <created_user>-</created_user>
     <created_date>2018/04/19 23:51:49.763</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/06/03 20:49:08.932</modified_date>
+    <modified_date>2018/06/04 12:02:26.336</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <order>
-    <hop>
-      <from>Get discardable datasets</from>
-      <to>Iterate over datasets</to>
-      <enabled>Y</enabled>
-    </hop>
     <hop>
       <from>Iterate over datasets</from>
       <to>Extract dataset info</to>
@@ -488,6 +483,16 @@
     <hop>
       <from>Extract dataset info</from>
       <to>Iterate over storage and data</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get discardable datasets</from>
+      <to>If datasets not empty</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>If datasets not empty</from>
+      <to>Iterate over datasets</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -928,7 +933,7 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id</jsScript
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
+      <xloc>592</xloc>
       <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1165,6 +1170,49 @@ discardable = JSON.stringify(discardableO)
     <GUI>
       <xloc>192</xloc>
       <yloc>16</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>If datasets not empty</name>
+    <type>FilterRows</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <send_true_to>Iterate over datasets</send_true_to>
+    <send_false_to />
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>datasets</leftvalue>
+        <function>&lt;></function>
+        <rightvalue />
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>[]</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask />
+        </value>
+      </condition>
+    </compare>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>384</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
