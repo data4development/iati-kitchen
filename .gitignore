@@ -4,3 +4,4 @@ tmp/
 .kettle/*.backup
 .kettle/xul*
 repository.log
+build.properties
