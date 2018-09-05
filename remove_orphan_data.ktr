@@ -428,11 +428,32 @@
     <created_user>-</created_user>
     <created_date>2018/04/19 23:51:49.763</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/06/14 14:51:06.992</modified_date>
+    <modified_date>2018/09/05 22:13:36.058</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
+    <notepad>
+      <note>Select datasets without a name field</note>
+      <xloc>688</xloc>
+      <yloc>16</yloc>
+      <width>222</width>
+      <heigth>29</heigth>
+      <fontname>Alegreya Sans</fontname>
+      <fontsize>11</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
   </notepads>
   <order>
     <hop>
