@@ -5,3 +5,8 @@ tmp/
 .kettle/xul*
 repository.log
 build.properties
+
+\.settings/
+\.kettle/repositories\.xml
+database/bookmarks/
+\.dbeaver-data-sources\.xml

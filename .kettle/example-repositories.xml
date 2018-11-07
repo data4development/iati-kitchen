@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Rename this to repositories.xml and adapt the base_directory 
+  to let Spoon work present the jobs and transformations 
+  as a local file-based repository -->
+<repositories>
+  <repository>
+    <id>KettleFileRepository</id>
+    <name>IATI Pentaho</name>
+    <description>IATI jobs and transformations</description>
+    <is_default>true</is_default>
+    <base_directory>...path to the location of your checkout...</base_directory>
+    <read_only>N</read_only>
+    <hides_hidden_files>N</hides_hidden_files>
+  </repository>
+</repositories>
