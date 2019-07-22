@@ -1,8 +1,22 @@
 FROM openjdk:8-jdk-slim
 
-LABEL maintainer="Rolf Kleef <rolf@drostan.org>" \
+LABEL maintainer="Rolf Kleef <rolf@data4development.nl>" \
   description="IATI/Pentaho Data Refresher" \
   repository="https://github.com/data4development/..."
+
+# To be adapted in the cluster or runtime config
+ENV KETTLE_JOBENTRY_LOG_DB=dwb_staging
+ENV KETTLE_JOB_LOG_DB=dwb_staging
+ENV KETTLE_STEP_LOG_DB=dwb_staging
+ENV KETTLE_TRANS_LOG_DB=dwb_staging
+
+# Postgresql database
+ENV DWB_DB_HOST=127.0.0.1
+ENV DWB_DB_PORT=5432
+ENV DWB_DB_NAME=dataworkbench
+ENV DWB_DB_USERNAME=postgres
+ENV DWB_DB_PASSWORD=password_here
+# ----------
 
 ENV PDI_MAIN       8.0
 ENV PDI_VERSION    8.0.0.0-28
