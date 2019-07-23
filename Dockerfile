@@ -4,23 +4,18 @@ LABEL maintainer="Rolf Kleef <rolf@data4development.nl>" \
   description="IATI/Pentaho Data Refresher" \
   repository="https://github.com/data4development/..."
 
-# To be adapted in the cluster or runtime config
-ENV KETTLE_JOBENTRY_LOG_DB=dwb_staging
-ENV KETTLE_JOB_LOG_DB=dwb_staging
-ENV KETTLE_STEP_LOG_DB=dwb_staging
-ENV KETTLE_TRANS_LOG_DB=dwb_staging
-
-# Postgresql database
-ENV DWB_DB_HOST=127.0.0.1
-ENV DWB_DB_PORT=5432
-ENV DWB_DB_NAME=dataworkbench
-ENV DWB_DB_USERNAME=postgres
-ENV DWB_DB_PASSWORD=password_here
+# To be adapted in the cluster or runtime config:
+# - the file .kettle/kettle.properties is injected in the container
+#   via cluster/deploy/properties/kettle.properties
+#   deployment-specific configuration should be updated there
 # ----------
 
-ENV PDI_MAIN       8.0
-ENV PDI_VERSION    8.0.0.0-28
-ENV HOME /home
+# To build the container
+ENV \
+    PDI_MAIN=8.0 \
+    PDI_VERSION=8.0.0.0-28 \
+    HOME=/home \
+    KETTLE_HOME=$HOME
 
 WORKDIR $HOME
 
@@ -66,9 +61,5 @@ RUN wget -q https://downloads.sourceforge.net/project/pentaho/Pentaho%20${PDI_MA
     cd ..
 
 COPY . ./
-# overwrite the local properties with the cluster version
-COPY .kettle/cluster-kettle.properties .kettle/kettle.properties
-
-ENV KETTLE_HOME $HOME
 
 ENTRYPOINT ["./data-integration/kitchen.sh"]
