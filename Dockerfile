@@ -15,7 +15,7 @@ ENV \
     PDI_MAIN=8.0 \
     PDI_VERSION=8.0.0.0-28 \
     HOME=/home \
-    KETTLE_HOME=$HOME
+    KETTLE_HOME=/home
 
 WORKDIR $HOME
 
