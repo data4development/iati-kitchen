@@ -9,3 +9,4 @@ repository.log
 \.kettle/repositories\.xml
 database/bookmarks/
 \.dbeaver-data-sources\.xml
+.dbeaver/
