@@ -875,8 +875,8 @@ versionwhere = JSON.stringify(vw)
 // Workspace record data to add
 var ws = {
   'slug': 'public',
-  'title': 'Published IATI data',
-  'description': 'IATI files in the Registry'
+  'title': 'Public data',
+  'description': 'IATI files published in the IATI Registry'
 }
 
 ws['iati-publisherId'] = o.id
