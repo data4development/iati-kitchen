@@ -20,7 +20,7 @@ ENV \
 WORKDIR $HOME
 
 RUN apt-get update && \
-  apt-get -y install --no-install-recommends wget && \
+  apt-get -y install --no-install-recommends wget unzip && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 

@@ -11,6 +11,7 @@
 
     <exec executable="docker">
       <arg value="build"/>
+      <arg value="--no-cache"/>
       <arg value="-t"/>
       <arg value="${repo}:next"/>
       <arg value="."/>
