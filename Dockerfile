@@ -28,7 +28,7 @@ RUN apt-get update && \
 # speed up and reduce footprint https://blog.twineworks.com/improving-startup-time-of-pentaho-data-integration-78d0803c559b
 # via https://hub.docker.com/r/enricomariam42/pentaho-di/~/dockerfile/
 
-RUN wget -q https://downloads.sourceforge.net/project/pentaho/Pentaho%20${PDI_MAIN}/client-tools/pdi-ce-${PDI_VERSION}.zip && \
+RUN wget -q https://netcologne.dl.sourceforge.net/project/pentaho/Pentaho%20${PDI_MAIN}/client-tools/pdi-ce-${PDI_VERSION}.zip && \
     unzip pdi-ce-${PDI_VERSION}.zip && \
     rm pdi-ce-${PDI_VERSION}.zip && \
     cd data-integration && \
