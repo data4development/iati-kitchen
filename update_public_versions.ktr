@@ -431,7 +431,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     <created_user>-</created_user>
     <created_date>2018/02/25 11:52:40.943</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/07/16 14:28:03.715</modified_date>
+    <modified_date>2020/05/19 12:40:54.810</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -441,7 +441,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
 Get the datasets for the publisher</note>
       <xloc>16</xloc>
       <yloc>48</yloc>
-      <width>221</width>
+      <width>278</width>
       <heigth>46</heigth>
       <fontname>Alegreya Sans</fontname>
       <fontsize>11</fontsize>
@@ -469,7 +469,7 @@ most recent, up to first validated version
 Add the md5s to the version record.</note>
       <xloc>16</xloc>
       <yloc>432</yloc>
-      <width>244</width>
+      <width>313</width>
       <heigth>154</heigth>
       <fontname>Alegreya Sans</fontname>
       <fontsize>11</fontsize>
@@ -493,9 +493,9 @@ JSON, SVRL reports available):
 
 Add a "discard" field to the record
 for future "garbage collection".</note>
-      <xloc>1296</xloc>
+      <xloc>1344</xloc>
       <yloc>432</yloc>
-      <width>202</width>
+      <width>261</width>
       <heigth>118</heigth>
       <fontname>Alegreya Sans</fontname>
       <fontsize>11</fontsize>
@@ -570,18 +570,13 @@ for future "garbage collection".</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Get packages for publisher</from>
-      <to>Check for HTTP 200 (packages)</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Add empty list of md5</from>
-      <to>Construct version record</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Start</from>
       <to>Get publishers from Registry</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get packages for publisher</from>
+      <to>Check for HTTP 200 (packages)</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -610,7 +605,22 @@ for future "garbage collection".</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
+      <from>Add empty list of md5</from>
+      <to>Select required fields 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select required fields 2</from>
+      <to>Construct version record</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
       <from>md5 to discard is not null</from>
+      <to>Select required fields 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select required fields 3</from>
       <to>Prepare "discard" field</to>
       <enabled>Y</enabled>
     </hop>
@@ -693,7 +703,7 @@ for future "garbage collection".</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>944</xloc>
+      <xloc>1232</xloc>
       <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
@@ -737,7 +747,7 @@ for future "garbage collection".</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>944</xloc>
+      <xloc>1232</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -892,7 +902,7 @@ versionwhere = JSON.stringify(vw)
         <jsScript_name>Script 1</jsScript_name>
         <jsScript_script>published_sets = {}
 JSON.parse(dataset_records).forEach( function(ds) {
-  published_sets[ds.name]=true;
+  published_sets[organisation_record + '/' + ds.name]=true;
 });
 
 md5show = [];
@@ -911,8 +921,8 @@ JSON.parse(our_datasets).forEach( function (ds) {
     jsondone = false;
     svrldone = false;
 
-	// is this dataset name (minus '.xml') in the list of published sets?
-    published = ds.filename.slice(0, -4) in published_sets;
+	// is this dataset name in the list of published sets?
+    published = ds.name in published_sets;
   }
 
   if (!published) {
@@ -963,7 +973,7 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>944</xloc>
+      <xloc>992</xloc>
       <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1107,7 +1117,7 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>752</xloc>
+      <xloc>800</xloc>
       <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1155,7 +1165,7 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>752</xloc>
+      <xloc>800</xloc>
       <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1199,7 +1209,7 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>752</xloc>
+      <xloc>800</xloc>
       <yloc>48</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1327,7 +1337,7 @@ wherefield = JSON.stringify(where)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1184</xloc>
+      <xloc>1232</xloc>
       <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1491,7 +1501,7 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1184</xloc>
+      <xloc>1232</xloc>
       <yloc>432</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1510,38 +1520,27 @@ filter = JSON.stringify(f)</jsScript_script>
     <fields>
       <field>
         <name>start</name>
-        <rename/>
       </field>
       <field>
         <name>registry_http</name>
-        <rename/>
       </field>
       <field>
         <name>organisation_record</name>
-        <rename/>
       </field>
       <field>
         <name>iati_get_packages_q</name>
-        <rename/>
       </field>
       <field>
         <name>publisher_http</name>
-        <rename/>
       </field>
       <field>
         <name>dataset_count</name>
-        <rename/>
       </field>
       <field>
         <name>dataset_success</name>
-        <rename/>
-      </field>
-      <field>
-        <name>dataset_records</name>
       </field>
       <field>
         <name>md5</name>
-        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -1556,6 +1555,113 @@ filter = JSON.stringify(f)</jsScript_script>
     <GUI>
       <xloc>544</xloc>
       <yloc>560</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select required fields 2</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>start</name>
+      </field>
+      <field>
+        <name>registry_http</name>
+      </field>
+      <field>
+        <name>organisation_record</name>
+      </field>
+      <field>
+        <name>iati_get_packages_q</name>
+      </field>
+      <field>
+        <name>publisher_http</name>
+      </field>
+      <field>
+        <name>dataset_count</name>
+      </field>
+      <field>
+        <name>dataset_success</name>
+      </field>
+      <field>
+        <name>md5</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>336</xloc>
+      <yloc>688</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select required fields 3</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>start</name>
+      </field>
+      <field>
+        <name>registry_http</name>
+      </field>
+      <field>
+        <name>organisation_record</name>
+      </field>
+      <field>
+        <name>iati_get_packages_q</name>
+      </field>
+      <field>
+        <name>publisher_http</name>
+      </field>
+      <field>
+        <name>dataset_count</name>
+      </field>
+      <field>
+        <name>dataset_success</name>
+      </field>
+      <field>
+        <name>md5</name>
+      </field>
+      <field>
+        <name>discardmd5</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1088</xloc>
+      <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1654,7 +1760,7 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1376</xloc>
+      <xloc>1424</xloc>
       <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1710,7 +1816,7 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>752</xloc>
+      <xloc>800</xloc>
       <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1726,8 +1832,8 @@ filter = JSON.stringify(f)</jsScript_script>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>Prepare "discard" field</send_true_to>
-    <send_false_to />
+    <send_true_to>Select required fields 3</send_true_to>
+    <send_false_to/>
     <compare>
       <condition>
         <negated>N</negated>
@@ -1745,8 +1851,8 @@ filter = JSON.stringify(f)</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1184</xloc>
-      <yloc>560</yloc>
+      <xloc>1232</xloc>
+      <yloc>576</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
