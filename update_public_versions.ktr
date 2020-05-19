@@ -13,12 +13,12 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     </parameters>
     <log>
       <trans-log-table>
-        <connection />
-        <schema />
-        <table />
-        <size_limit_lines />
-        <interval />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <size_limit_lines/>
+        <interval/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>Y</enabled>
@@ -43,37 +43,37 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
           <id>LINES_READ</id>
           <enabled>Y</enabled>
           <name>LINES_READ</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_WRITTEN</id>
           <enabled>Y</enabled>
           <name>LINES_WRITTEN</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_UPDATED</id>
           <enabled>Y</enabled>
           <name>LINES_UPDATED</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_INPUT</id>
           <enabled>Y</enabled>
           <name>LINES_INPUT</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_OUTPUT</id>
           <enabled>Y</enabled>
           <name>LINES_OUTPUT</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>LINES_REJECTED</id>
           <enabled>Y</enabled>
           <name>LINES_REJECTED</name>
-          <subject />
+          <subject/>
         </field>
         <field>
           <id>ERRORS</id>
@@ -127,11 +127,11 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
         </field>
       </trans-log-table>
       <perf-log-table>
-        <connection />
-        <schema />
-        <table />
-        <interval />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <interval/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>N</enabled>
@@ -209,10 +209,10 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
         </field>
       </perf-log-table>
       <channel-log-table>
-        <connection />
-        <schema />
-        <table />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>N</enabled>
@@ -275,10 +275,10 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
         </field>
       </channel-log-table>
       <step-log-table>
-        <connection />
-        <schema />
-        <table />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>Y</enabled>
@@ -351,10 +351,10 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
         </field>
       </step-log-table>
       <metrics-log-table>
-        <connection />
-        <schema />
-        <table />
-        <timeout_days />
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
         <field>
           <id>ID_BATCH</id>
           <enabled>Y</enabled>
@@ -403,9 +403,9 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
       </metrics-log-table>
     </log>
     <maxdate>
-      <connection />
-      <table />
-      <field />
+      <connection/>
+      <table/>
+      <field/>
       <offset>0.0</offset>
       <maxdiff>0.0</maxdiff>
     </maxdate>
@@ -416,7 +416,7 @@ It then uses the DataWorkbench API to find all available md5s for the active dat
     <feedback_shown>Y</feedback_shown>
     <feedback_size>50000</feedback_size>
     <using_thread_priorities>Y</using_thread_priorities>
-    <shared_objects_file />
+    <shared_objects_file/>
     <capture_step_performance>N</capture_step_performance>
     <step_performance_capturing_delay>1000</step_performance_capturing_delay>
     <step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
@@ -618,29 +618,30 @@ for future "garbage collection".</note>
   <step>
     <name>Add empty list of md5</name>
     <type>Constant</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <name>md5</name>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>[]</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -656,22 +657,22 @@ for future "garbage collection".</note>
   <step>
     <name>Check for HTTP 200 (IATI)</name>
     <type>FilterRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <send_true_to>Iterate over publishers</send_true_to>
-    <send_false_to />
+    <send_false_to/>
     <compare>
       <condition>
         <negated>N</negated>
         <leftvalue>registry_http</leftvalue>
         <function>=</function>
-        <rightvalue />
+        <rightvalue/>
         <value>
           <name>constant</name>
           <type>Integer</type>
@@ -683,7 +684,8 @@ for future "garbage collection".</note>
         </value>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -699,22 +701,22 @@ for future "garbage collection".</note>
   <step>
     <name>Check for HTTP 200 (packages)</name>
     <type>FilterRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <send_true_to>Get number of datasets</send_true_to>
-    <send_false_to />
+    <send_false_to/>
     <compare>
       <condition>
         <negated>N</negated>
         <leftvalue>publisher_http</leftvalue>
         <function>=</function>
-        <rightvalue />
+        <rightvalue/>
         <value>
           <name>constant</name>
           <type>Integer</type>
@@ -726,7 +728,8 @@ for future "garbage collection".</note>
         </value>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -742,13 +745,13 @@ for future "garbage collection".</note>
   <step>
     <name>Check for datasets</name>
     <type>FilterRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <send_true_to>Prepare to get datasets</send_true_to>
     <send_false_to>Add empty list of md5</send_false_to>
@@ -760,7 +763,7 @@ for future "garbage collection".</note>
             <negated>N</negated>
             <leftvalue>dataset_success</leftvalue>
             <function>=</function>
-            <rightvalue />
+            <rightvalue/>
             <value>
               <name>constant</name>
               <type>Boolean</type>
@@ -768,7 +771,7 @@ for future "garbage collection".</note>
               <length>-1</length>
               <precision>-1</precision>
               <isnull>N</isnull>
-              <mask />
+              <mask/>
             </value>
           </condition>
           <condition>
@@ -776,7 +779,7 @@ for future "garbage collection".</note>
             <operator>AND</operator>
             <leftvalue>dataset_count</leftvalue>
             <function>&gt;</function>
-            <rightvalue />
+            <rightvalue/>
             <value>
               <name>constant</name>
               <type>Integer</type>
@@ -790,7 +793,8 @@ for future "garbage collection".</note>
         </conditions>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -806,13 +810,13 @@ for future "garbage collection".</note>
   <step>
     <name>Construct version record</name>
     <type>ScriptValueMod</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <compatible>N</compatible>
     <optimizationLevel>9</optimizationLevel>
@@ -855,7 +859,8 @@ versionwhere = JSON.stringify(vw)
         <replace>N</replace>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -871,13 +876,13 @@ versionwhere = JSON.stringify(vw)
   <step>
     <name>Gather md5s to show and discard</name>
     <type>ScriptValueMod</type>
-    <description />
+    <description/>
     <distribute>N</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <compatible>N</compatible>
     <optimizationLevel>9</optimizationLevel>
@@ -949,7 +954,8 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
         <replace>N</replace>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -965,16 +971,16 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
   <step>
     <name>Get number of datasets</name>
     <type>JsonInput</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <include>N</include>
-    <include_field />
+    <include_field/>
     <rownum>N</rownum>
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
@@ -983,11 +989,11 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
     <defaultPathLeafToNull>Y</defaultPathLeafToNull>
-    <rownum_field />
+    <rownum_field/>
     <file>
-      <name />
-      <filemask />
-      <exclude_filemask />
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
       <file_required>N</file_required>
       <include_subfolders>N</include_subfolders>
     </file>
@@ -996,10 +1002,10 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
         <name>dataset_count</name>
         <path>$.result.count</path>
         <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <length>-1</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
@@ -1009,10 +1015,10 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
         <name>dataset_success</name>
         <path>$.success</path>
         <type>Boolean</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <length>-1</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
@@ -1022,10 +1028,10 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
         <name>dataset_records</name>
         <path>$.result.results</path>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <length>-1</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
@@ -1036,15 +1042,16 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
     <IsInFields>Y</IsInFields>
     <IsAFile>N</IsAFile>
     <valueField>publisher_result</valueField>
-    <shortFileFieldName />
-    <pathFieldName />
-    <hiddenFieldName />
-    <lastModificationTimeFieldName />
-    <uriNameFieldName />
-    <rootUriNameFieldName />
-    <extensionFieldName />
-    <sizeFieldName />
-    <cluster_schema />
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1060,22 +1067,22 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
   <step>
     <name>Get our datasets</name>
     <type>HTTP</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <url>${DWB_API_URL}/iati-datasets</url>
     <urlInField>N</urlInField>
-    <urlField />
+    <urlField/>
     <encoding>UTF-8</encoding>
-    <httpLogin />
+    <httpLogin/>
     <httpPassword>Encrypted </httpPassword>
-    <proxyHost />
-    <proxyPort />
+    <proxyHost/>
+    <proxyPort/>
     <socketTimeout>10000</socketTimeout>
     <connectionTimeout>10000</connectionTimeout>
     <closeIdleConnectionsTime>-1</closeIdleConnectionsTime>
@@ -1088,10 +1095,11 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
     <result>
       <name>our_datasets</name>
       <code>our_datasets_http</code>
-      <response_time />
-      <response_header />
+      <response_time/>
+      <response_header/>
     </result>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1107,22 +1115,22 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
   <step>
     <name>Get packages for publisher</name>
     <type>HTTP</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <url>${IATI_API_URL}/${IATI_API_PACKAGE_SEARCH}</url>
     <urlInField>N</urlInField>
-    <urlField />
+    <urlField/>
     <encoding>UTF-8</encoding>
-    <httpLogin />
+    <httpLogin/>
     <httpPassword>Encrypted </httpPassword>
-    <proxyHost />
-    <proxyPort />
+    <proxyHost/>
+    <proxyPort/>
     <socketTimeout>10000</socketTimeout>
     <connectionTimeout>10000</connectionTimeout>
     <closeIdleConnectionsTime>-1</closeIdleConnectionsTime>
@@ -1135,10 +1143,11 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
     <result>
       <name>publisher_result</name>
       <code>publisher_http</code>
-      <response_time />
-      <response_header />
+      <response_time/>
+      <response_header/>
     </result>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1154,22 +1163,22 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
   <step>
     <name>Get publishers from Registry</name>
     <type>HTTP</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <url>${IATI_API_URL}/${IATI_API_GET_ALL_ORGS}</url>
     <urlInField>N</urlInField>
-    <urlField />
+    <urlField/>
     <encoding>UTF-8</encoding>
-    <httpLogin />
+    <httpLogin/>
     <httpPassword>Encrypted </httpPassword>
-    <proxyHost />
-    <proxyPort />
+    <proxyHost/>
+    <proxyPort/>
     <socketTimeout>60000</socketTimeout>
     <connectionTimeout>10000</connectionTimeout>
     <closeIdleConnectionsTime>-1</closeIdleConnectionsTime>
@@ -1178,10 +1187,11 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
     <result>
       <name>registry_result</name>
       <code>registry_http</code>
-      <response_time />
-      <response_header />
+      <response_time/>
+      <response_header/>
     </result>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1197,16 +1207,16 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
   <step>
     <name>Iterate over publishers</name>
     <type>JsonInput</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <include>N</include>
-    <include_field />
+    <include_field/>
     <rownum>N</rownum>
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
@@ -1215,11 +1225,11 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
     <defaultPathLeafToNull>Y</defaultPathLeafToNull>
-    <rownum_field />
+    <rownum_field/>
     <file>
-      <name />
-      <filemask />
-      <exclude_filemask />
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
       <file_required>N</file_required>
       <include_subfolders>N</include_subfolders>
     </file>
@@ -1228,10 +1238,10 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
         <name>organisation_record</name>
         <path>$.result[*]</path>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <length>-1</length>
         <precision>-1</precision>
         <trim_type>both</trim_type>
@@ -1242,15 +1252,16 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
     <IsInFields>Y</IsInFields>
     <IsAFile>N</IsAFile>
     <valueField>registry_result</valueField>
-    <shortFileFieldName />
-    <pathFieldName />
-    <hiddenFieldName />
-    <lastModificationTimeFieldName />
-    <uriNameFieldName />
-    <rootUriNameFieldName />
-    <extensionFieldName />
-    <sizeFieldName />
-    <cluster_schema />
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1266,13 +1277,13 @@ discardmd5s = JSON.stringify(md5discard);</jsScript_script>
   <step>
     <name>Prepare "discard" field</name>
     <type>ScriptValueMod</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <compatible>N</compatible>
     <optimizationLevel>9</optimizationLevel>
@@ -1307,7 +1318,8 @@ wherefield = JSON.stringify(where)</jsScript_script>
         <replace>N</replace>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1323,13 +1335,13 @@ wherefield = JSON.stringify(where)</jsScript_script>
   <step>
     <name>Prepare URL to get packages</name>
     <type>ScriptValueMod</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <compatible>N</compatible>
     <optimizationLevel>9</optimizationLevel>
@@ -1353,7 +1365,8 @@ iati_get_packages_q = 'organization:' + organisation_record
         <replace>N</replace>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1369,13 +1382,13 @@ iati_get_packages_q = 'organization:' + organisation_record
   <step>
     <name>Prepare to get datasets</name>
     <type>ScriptValueMod</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <compatible>N</compatible>
     <optimizationLevel>9</optimizationLevel>
@@ -1399,7 +1412,8 @@ filter = JSON.stringify(f)</jsScript_script>
         <replace>N</replace>
       </field>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1415,16 +1429,16 @@ filter = JSON.stringify(f)</jsScript_script>
   <step>
     <name>Process md5s to discard</name>
     <type>JsonInput</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <include>N</include>
-    <include_field />
+    <include_field/>
     <rownum>N</rownum>
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
@@ -1433,11 +1447,11 @@ filter = JSON.stringify(f)</jsScript_script>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
     <defaultPathLeafToNull>Y</defaultPathLeafToNull>
-    <rownum_field />
+    <rownum_field/>
     <file>
-      <name />
-      <filemask />
-      <exclude_filemask />
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
       <file_required>N</file_required>
       <include_subfolders>N</include_subfolders>
     </file>
@@ -1446,10 +1460,10 @@ filter = JSON.stringify(f)</jsScript_script>
         <name>discardmd5</name>
         <path>$.[*]</path>
         <type>String</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <length>-1</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
@@ -1460,15 +1474,16 @@ filter = JSON.stringify(f)</jsScript_script>
     <IsInFields>Y</IsInFields>
     <IsAFile>N</IsAFile>
     <valueField>discardmd5s</valueField>
-    <shortFileFieldName />
-    <pathFieldName />
-    <hiddenFieldName />
-    <lastModificationTimeFieldName />
-    <uriNameFieldName />
-    <rootUriNameFieldName />
-    <extensionFieldName />
-    <sizeFieldName />
-    <cluster_schema />
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1484,45 +1499,54 @@ filter = JSON.stringify(f)</jsScript_script>
   <step>
     <name>Select required fields</name>
     <type>SelectValues</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <name>start</name>
+        <rename/>
       </field>
       <field>
         <name>registry_http</name>
+        <rename/>
       </field>
       <field>
         <name>organisation_record</name>
+        <rename/>
       </field>
       <field>
         <name>iati_get_packages_q</name>
+        <rename/>
       </field>
       <field>
         <name>publisher_http</name>
+        <rename/>
       </field>
       <field>
         <name>dataset_count</name>
+        <rename/>
       </field>
       <field>
         <name>dataset_success</name>
+        <rename/>
       </field>
       <field>
         <name>dataset_records</name>
       </field>
       <field>
         <name>md5</name>
+        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1538,22 +1562,22 @@ filter = JSON.stringify(f)</jsScript_script>
   <step>
     <name>Start</name>
     <type>RowGenerator</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <fields>
       <field>
         <name>start</name>
         <type>Integer</type>
-        <format />
-        <currency />
-        <decimal />
-        <group />
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
         <nullif>1</nullif>
         <length>-1</length>
         <precision>-1</precision>
@@ -1565,7 +1589,8 @@ filter = JSON.stringify(f)</jsScript_script>
     <interval_in_ms>5000</interval_in_ms>
     <row_time_field>now</row_time_field>
     <last_time_field>FiveSecondsAgo</last_time_field>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1581,28 +1606,28 @@ filter = JSON.stringify(f)</jsScript_script>
   <step>
     <name>Upsert iati-dataset</name>
     <type>Rest</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <applicationType>JSON</applicationType>
     <method>POST</method>
     <url>${DWB_API_URL}/iati-datasets/upsertWithWhere</url>
     <urlInField>N</urlInField>
     <dynamicMethod>N</dynamicMethod>
-    <methodFieldName />
-    <urlField />
+    <methodFieldName/>
+    <urlField/>
     <bodyField>discardfield</bodyField>
-    <httpLogin />
+    <httpLogin/>
     <httpPassword>Encrypted </httpPassword>
-    <proxyHost />
-    <proxyPort />
+    <proxyHost/>
+    <proxyPort/>
     <preemptive>N</preemptive>
-    <trustStoreFile />
+    <trustStoreFile/>
     <trustStorePassword>Encrypted </trustStorePassword>
     <headers>
       </headers>
@@ -1617,10 +1642,11 @@ filter = JSON.stringify(f)</jsScript_script>
     <result>
       <name>discard_result</name>
       <code>discard_http</code>
-      <response_time />
-      <response_header />
+      <response_time/>
+      <response_header/>
     </result>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1636,28 +1662,28 @@ filter = JSON.stringify(f)</jsScript_script>
   <step>
     <name>Upsert version</name>
     <type>Rest</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <applicationType>JSON</applicationType>
     <method>POST</method>
     <url>${DWB_API_URL}/versions/upsertWithWhere</url>
     <urlInField>N</urlInField>
     <dynamicMethod>N</dynamicMethod>
-    <methodFieldName />
-    <urlField />
+    <methodFieldName/>
+    <urlField/>
     <bodyField>version</bodyField>
-    <httpLogin />
+    <httpLogin/>
     <httpPassword>Encrypted </httpPassword>
-    <proxyHost />
-    <proxyPort />
+    <proxyHost/>
+    <proxyPort/>
     <preemptive>N</preemptive>
-    <trustStoreFile />
+    <trustStoreFile/>
     <trustStorePassword>Encrypted </trustStorePassword>
     <headers>
       </headers>
@@ -1672,10 +1698,11 @@ filter = JSON.stringify(f)</jsScript_script>
     <result>
       <name>version_result</name>
       <code>version_http</code>
-      <response_time />
-      <response_header />
+      <response_time/>
+      <response_header/>
     </result>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1691,13 +1718,13 @@ filter = JSON.stringify(f)</jsScript_script>
   <step>
     <name>md5 to discard is not null</name>
     <type>FilterRows</type>
-    <description />
+    <description/>
     <distribute>Y</distribute>
-    <custom_distribution />
+    <custom_distribution/>
     <copies>1</copies>
     <partitioning>
       <method>none</method>
-      <schema_name />
+      <schema_name/>
     </partitioning>
     <send_true_to>Prepare "discard" field</send_true_to>
     <send_false_to />
@@ -1706,10 +1733,11 @@ filter = JSON.stringify(f)</jsScript_script>
         <negated>N</negated>
         <leftvalue>discardmd5</leftvalue>
         <function>IS NOT NULL</function>
-        <rightvalue />
+        <rightvalue/>
       </condition>
     </compare>
-    <cluster_schema />
+    <attributes/>
+    <cluster_schema/>
     <remotesteps>
       <input>
       </input>
@@ -1727,4 +1755,5 @@ filter = JSON.stringify(f)</jsScript_script>
   <slave-step-copy-partition-distribution>
   </slave-step-copy-partition-distribution>
   <slave_transformation>N</slave_transformation>
+  <attributes/>
 </transformation>
