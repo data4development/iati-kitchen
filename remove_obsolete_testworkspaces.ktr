@@ -1,6 +1,6 @@
 <transformation>
   <info>
-    <name>remove_obsolete_files</name>
+    <name>remove_obsolete_testworkspaces</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -428,39 +428,13 @@
     <created_user>-</created_user>
     <created_date>2018/04/19 23:51:49.763</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2020/05/27 11:10:36.678</modified_date>
+    <modified_date>2020/05/27 10:58:27.868</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
-    <notepad>
-      <note>Select files with discard: true and older than a week</note>
-      <xloc>704</xloc>
-      <yloc>16</yloc>
-      <width>394</width>
-      <heigth>29</heigth>
-      <fontname>Alegreya Sans</fontname>
-      <fontsize>11</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>255</backgroundcolorred>
-      <backgroundcolorgreen>205</backgroundcolorgreen>
-      <backgroundcolorblue>112</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
   </notepads>
   <order>
-    <hop>
-      <from>Iterate over datasets</from>
-      <to>Extract dataset info</to>
-      <enabled>Y</enabled>
-    </hop>
     <hop>
       <from>Iterate over storage and data</from>
       <to>Delete the resource</to>
@@ -468,7 +442,7 @@
     </hop>
     <hop>
       <from>Set dataset select filter</from>
-      <to>Get discardable datasets</to>
+      <to>Get discardable testworkspaces</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -487,7 +461,37 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Get discardable datasets</from>
+      <from>Get discardable testworkspaces</from>
+      <to>If workspaces not empty</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>If workspaces not empty</from>
+      <to>Iterate over workspaces</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Iterate over datasets</from>
+      <to>Extract dataset info</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Iterate over workspaces</from>
+      <to>Prep delete testworkspace</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Prep delete testworkspace</from>
+      <to>Delete the workspace</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Iterate over workspaces</from>
+      <to>Get datasets</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get datasets</from>
       <to>If datasets not empty</to>
       <enabled>Y</enabled>
     </hop>
@@ -544,8 +548,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>592</xloc>
-      <yloc>224</yloc>
+      <xloc>784</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -596,8 +600,60 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>592</xloc>
-      <yloc>320</yloc>
+      <xloc>784</xloc>
+      <yloc>512</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Delete the workspace</name>
+    <type>Rest</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <applicationType>JSON</applicationType>
+    <method>DELETE</method>
+    <url/>
+    <urlInField>Y</urlInField>
+    <dynamicMethod>N</dynamicMethod>
+    <methodFieldName/>
+    <urlField>deleteworkspace</urlField>
+    <bodyField/>
+    <httpLogin/>
+    <httpPassword>Encrypted </httpPassword>
+    <proxyHost/>
+    <proxyPort/>
+    <preemptive>N</preemptive>
+    <trustStoreFile/>
+    <trustStorePassword>Encrypted </trustStorePassword>
+    <headers>
+      </headers>
+    <parameters>
+      </parameters>
+    <matrixParameters>
+      </matrixParameters>
+    <result>
+      <name>deleteworkspace_result</name>
+      <code>deleteworkspace_http</code>
+      <response_time/>
+      <response_header/>
+    </result>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>784</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -621,24 +677,24 @@
         <jsScript_script>ds = JSON.parse(dataset)
 
 id = ds.id
-md5 = ds.md5
+filename = ds.fileid
+fileid = filename.replace(/\.[^/.]+$/, "")
 
 svrl = "svrl-updated" in ds
 json = "json-updated" in ds
 
-base_api = getVariable("DWB_API_URL","") + "/iati-files/"
+base_api = getVariable("DWB_API_URL","") + "/iati-testfiles/"
 
 // generate a list of files to delete from storage
-storages = [ base_api + getVariable("CONTAINER_PUBLIC_SOURCE","") + "/files/" + md5 + ".xml",
-             base_api + getVariable("CONTAINER_PUBLIC_FEEDBACK","") + "/files/" + md5 + ".feedback.xml",
-             base_api + getVariable("CONTAINER_PUBLIC_JSON","") + "/files/" + md5 + ".json",
-             base_api + getVariable("CONTAINER_PUBLIC_SVRL","") + "/files/" + md5 + ".svrl",
-             getVariable("DWB_API_URL","") + "/iati-datasets/" + id]
+storages = [ base_api + getVariable("CONTAINER_UPLOAD_SOURCE","") + "/files/" + filename,
+             base_api + getVariable("CONTAINER_UPLOAD_FEEDBACK","") + "/files/" + fileid + ".feedback.xml",
+             base_api + getVariable("CONTAINER_UPLOAD_JSON","") + "/files/" + fileid + ".json",
+             base_api + getVariable("CONTAINER_UPLOAD_SVRL","") + "/files/" + fileid + ".svrl",
+             getVariable("DWB_API_URL","") + "/iati-testdatasets/" + id]
 
 storagelist = JSON.stringify(storages)
 
-deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
-</jsScript_script>
+deletedataset = getVariable("DWB_API_URL","") + "/iati-testdatasets/" + id</jsScript_script>
       </jsScript>
     </jsScripts>
     <fields>
@@ -646,30 +702,6 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
         <name>id</name>
         <rename>id</rename>
         <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>md5</name>
-        <rename>md5</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>svrl</name>
-        <rename>svrl</rename>
-        <type>Boolean</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>json</name>
-        <rename>json</rename>
-        <type>Boolean</type>
         <length>-1</length>
         <precision>-1</precision>
         <replace>N</replace>
@@ -690,7 +722,93 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
         <precision>-1</precision>
         <replace>N</replace>
       </field>
+      <field>
+        <name>fileid</name>
+        <rename>fileid</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>filename</name>
+        <rename>filename</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
     </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>384</xloc>
+      <yloc>416</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Get datasets</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>Y</removeSourceField>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>Y</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>datasets</name>
+        <path>$.datasets</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>workspace</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -706,7 +824,7 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
     </GUI>
   </step>
   <step>
-    <name>Get discardable datasets</name>
+    <name>Get discardable testworkspaces</name>
     <type>HTTP</type>
     <description/>
     <distribute>Y</distribute>
@@ -716,7 +834,7 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <url>${DWB_API_URL}/iati-datasets</url>
+    <url>${DWB_API_URL}/iati-testworkspaces</url>
     <urlInField>N</urlInField>
     <urlField/>
     <encoding>UTF-8</encoding>
@@ -734,8 +852,8 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
       </arg>
     </lookup>
     <result>
-      <name>datasets</name>
-      <code>datasets_http</code>
+      <name>workspaces</name>
+      <code>workspaces_http</code>
       <response_time/>
       <response_header/>
     </result>
@@ -764,7 +882,7 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>Iterate over datasets</send_true_to>
+    <send_true_to/>
     <send_false_to/>
     <compare>
       <condition>
@@ -792,7 +910,51 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>384</xloc>
+      <xloc>192</xloc>
+      <yloc>320</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>If workspaces not empty</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to/>
+    <send_false_to/>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>workspaces</leftvalue>
+        <function>&lt;></function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>[]</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>192</xloc>
       <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
@@ -801,7 +963,7 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
     <name>Iterate over datasets</name>
     <type>JsonInput</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -862,8 +1024,8 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
       </output>
     </remotesteps>
     <GUI>
-      <xloc>592</xloc>
-      <yloc>112</yloc>
+      <xloc>192</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -932,8 +1094,134 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
       </output>
     </remotesteps>
     <GUI>
+      <xloc>576</xloc>
+      <yloc>512</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Iterate over workspaces</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>Y</removeSourceField>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>Y</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>workspace</name>
+        <path>$.[*]</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>workspaces</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
       <xloc>384</xloc>
-      <yloc>320</yloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Prep delete testworkspace</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>ws = JSON.parse(workspace)
+
+id = ws.id
+
+deleteworkspace = getVariable("DWB_API_URL","") + "/iati-testworkspaces/" + id</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>id</name>
+        <rename>id</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>deleteworkspace</name>
+        <rename>deleteworkspace</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>592</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -955,12 +1243,12 @@ deletedataset = getVariable("DWB_API_URL","") + "/iati-datasets/" + id
         <jsScript_type>0</jsScript_type>
         <jsScript_name>Script 1</jsScript_name>
         <jsScript_script>
-cutoffdate = dateAdd(new Date(), "d", -getVariable("DWB_DATASET_MAXDAYSOBSOLETE",7))
+cutoffdate = dateAdd(new Date(), "d", -getVariable("DWB_TESTWORKSPACE_MAXDAYSOBSOLETE",7))
 
 discardableO = {
   "where": {
-    "updated": {"lt": date2str(cutoffdate, "yyyy-MM-dd'T'HH:mm:ss")},
-    "discard": true}, 
+    "created": {"lt": date2str(cutoffdate, "yyyy-MM-dd'T'HH:mm:ss")}
+  }, 
   "limit": 1000
 }
 
